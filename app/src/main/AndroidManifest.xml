@@ -29,6 +29,7 @@
             android:name=".ProjectFilesActivity"
             android:exported="false"
             android:label="@string/explore_files" />
+
     </application>
 
 </manifest>
