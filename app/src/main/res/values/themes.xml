@@ -1,8 +1,127 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Nanohttpd" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.Nanohttpd" parent="Theme.Material3.DayNight">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:fontFamily">@font/rubik_font_family</item>
+        <item name="fontFamily">@font/rubik_font_family</item>
+        
+        <!-- Material3 Color Theme -->
+        <item name="colorPrimary">@color/md_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_light_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_light_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/md_theme_light_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_light_onTertiaryContainer</item>
+        <item name="colorError">@color/md_theme_light_error</item>
+        <item name="colorErrorContainer">@color/md_theme_light_errorContainer</item>
+        <item name="colorOnError">@color/md_theme_light_onError</item>
+        <item name="colorOnErrorContainer">@color/md_theme_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/md_theme_light_background</item>
+        <item name="colorOnBackground">@color/md_theme_light_onBackground</item>
+        <item name="colorSurface">@color/md_theme_light_surface</item>
+        <item name="colorOnSurface">@color/md_theme_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_light_onSurfaceVariant</item>
+        <item name="colorOutline">@color/md_theme_light_outline</item>
+        
+        <!-- Text Appearance Styles -->
+        <item name="textAppearanceDisplayLarge">@style/TextAppearance.Nanohttpd.DisplayLarge</item>
+        <item name="textAppearanceDisplayMedium">@style/TextAppearance.Nanohttpd.DisplayMedium</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.Nanohttpd.DisplaySmall</item>
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.Nanohttpd.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.Nanohttpd.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.Nanohttpd.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.Nanohttpd.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.Nanohttpd.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.Nanohttpd.TitleSmall</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.Nanohttpd.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.Nanohttpd.BodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.Nanohttpd.BodySmall</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.Nanohttpd.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.Nanohttpd.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.Nanohttpd.LabelSmall</item>
+    </style>
+
+    <!-- Text Appearance Styles -->
+    <style name="TextAppearance.Nanohttpd.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="android:fontFamily">@font/rubik_font_family</item>
+        <item name="fontFamily">@font/rubik_font_family</item>
+    </style>
+
+    <style name="TextAppearance.Nanohttpd.DisplayMedium" parent="TextAppearance.Material3.DisplayMedium">
+        <item name="android:fontFamily">@font/rubik_font_family</item>
+        <item name="fontFamily">@font/rubik_font_family</item>
+    </style>
+
+    <style name="TextAppearance.Nanohttpd.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="android:fontFamily">@font/rubik_font_family</item>
+        <item name="fontFamily">@font/rubik_font_family</item>
+    </style>
+
+    <style name="TextAppearance.Nanohttpd.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:fontFamily">@font/rubik_font_family</item>
+        <item name="fontFamily">@font/rubik_font_family</item>
+    </style>
+
+    <style name="TextAppearance.Nanohttpd.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:fontFamily">@font/rubik_font_family</item>
+        <item name="fontFamily">@font/rubik_font_family</item>
+    </style>
+
+    <style name="TextAppearance.Nanohttpd.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:fontFamily">@font/rubik_font_family</item>
+        <item name="fontFamily">@font/rubik_font_family</item>
+    </style>
+
+    <style name="TextAppearance.Nanohttpd.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">@font/rubik_font_family</item>
+        <item name="fontFamily">@font/rubik_font_family</item>
+    </style>
+
+    <style name="TextAppearance.Nanohttpd.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:fontFamily">@font/rubik_font_family</item>
+        <item name="fontFamily">@font/rubik_font_family</item>
+    </style>
+
+    <style name="TextAppearance.Nanohttpd.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:fontFamily">@font/rubik_font_family</item>
+        <item name="fontFamily">@font/rubik_font_family</item>
+    </style>
+
+    <style name="TextAppearance.Nanohttpd.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:fontFamily">@font/rubik_font_family</item>
+        <item name="fontFamily">@font/rubik_font_family</item>
+    </style>
+
+    <style name="TextAppearance.Nanohttpd.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/rubik_font_family</item>
+        <item name="fontFamily">@font/rubik_font_family</item>
+    </style>
+
+    <style name="TextAppearance.Nanohttpd.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:fontFamily">@font/rubik_font_family</item>
+        <item name="fontFamily">@font/rubik_font_family</item>
+    </style>
+
+    <style name="TextAppearance.Nanohttpd.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:fontFamily">@font/rubik_font_family</item>
+        <item name="fontFamily">@font/rubik_font_family</item>
+    </style>
+
+    <style name="TextAppearance.Nanohttpd.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:fontFamily">@font/rubik_font_family</item>
+        <item name="fontFamily">@font/rubik_font_family</item>
+    </style>
+
+    <style name="TextAppearance.Nanohttpd.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:fontFamily">@font/rubik_font_family</item>
+        <item name="fontFamily">@font/rubik_font_family</item>
     </style>
 
     <style name="Theme.Nanohttpd" parent="Base.Theme.Nanohttpd" />

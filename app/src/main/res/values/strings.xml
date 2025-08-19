@@ -4,5 +4,14 @@
     <string name="description_home">از لیست زیر پروژه‌ای را انتخاب کنید و سپس برای نمایش یا بررسی فایل‌ها دکمه‌های زیر را بزنید.</string>
     <string name="select_project">انتخاب پروژه</string>
     <string name="open_project">باز کردن پروژه</string>
-    <string name="explore_files">مرور فایل‌ها</string>
+    <string name="explore_files">مرور فایل‌های پروژه</string>
+    <string name="download_website">دانلود وبسایت</string>
+    <string name="download_description">لینک وبسایتی را وارد کنید تا تمام فایل‌های آن دانلود شود و به عنوان پروژه جدید اضافه شود.</string>
+    <string name="enter_website_url">آدرس وبسایت را وارد کنید</string>
+    <string name="start_download">شروع دانلود</string>
+    <string name="downloading">در حال دانلود...</string>
+    <string name="enter_valid_url">لطفاً آدرس معتبری وارد کنید</string>
+    <string name="url_must_start_with_http">آدرس باید با http:// یا https:// شروع شود</string>
+    <string name="download_completed">دانلود کامل شد: %1$s</string>
+    <string name="download_error">خطا در دانلود: %1$s</string>
 </resources>
