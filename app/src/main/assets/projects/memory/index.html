@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Memory Match</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header>Memory Match</header>
+<main>
+    <section class="hud">
+        <div>Moves: <span id="moves">0</span></div>
+        <div>Time: <span id="time">0</span>s</div>
+        <button id="restart">Restart</button>
+    </section>
+
+    <section id="grid" class="grid" aria-label="card grid"></section>
+
+    <p class="muted">
+        Match all pairs. Cards shuffle on restart. If you beat your best time, congratulate yourself quietly.
+    </p>
+</main>
+
+<script src="./app.js"></script>
+</body>
+</html>

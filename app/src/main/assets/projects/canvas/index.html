@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Canvas Draw</title>
+    <style>
+        body { font-family: system-ui, -apple-system, Roboto, Arial, sans-serif; margin: 0; background:#111827; color:#e5e7eb; }
+        header { background:#7c3aed; padding:16px; font-weight:800; }
+        main { padding:16px; max-width:760px; margin:0 auto; }
+        .card { background:#0b1020; border:1px solid #312e81; border-radius:14px; padding:18px; box-shadow: 0 1px 2px rgba(0,0,0,.4); }
+        .row { display:flex; gap:10px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
+        button, select, input[type="range"] {
+          padding:10px 14px; border-radius:10px; border:0; background:#312e81; color:#e5e7eb; font-weight:700;
+        }
+        /* Responsive canvas: fills the card width, keeps sane height via JS */
+        canvas {
+          width: 100%;
+          max-width: 700px;     /* optional upper bound */
+          height: auto;         /* real pixel height set in JS */
+          background:#0f172a;
+          border:1px solid #334155;
+          border-radius:12px;
+          touch-action: none;
+          display: block;
+        }
+        .muted { color:#94a3b8; font-size:13px; }
+    </style>
+</head>
+<body>
+<header>Canvas Draw</header>
+<main>
+    <div class="card">
+        <div class="row">
+            <label>Color <input type="color" id="color" value="#22d3ee"></label>
+            <label>Size <input type="range" id="size" min="1" max="30" value="6"></label>
+            <button id="clear">Clear</button>
+            <button id="save">Save PNG</button>
+        </div>
+        <canvas id="c"></canvas>
+        <p class="muted">Draw with your finger or mouse. Creativity not included.</p>
+    </div>
+</main>
+
+<script>
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    const color = document.getElementById('color');
+    const size = document.getElementById('size');
+    const clearBtn = document.getElementById('clear');
+    const saveBtn  = document.getElementById('save');
+
+    let drawing = false, lastX=0, lastY=0;
+
+    // Resize canvas internal pixels to match CSS box and devicePixelRatio
+    function resizeCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+
+      // Choose a reasonable height based on width, clamped to avoid absurd sizes
+      const targetCssWidth  = rect.width || canvas.parentElement.clientWidth || 320;
+      const targetCssHeight = Math.max(220, Math.min(420, targetCssWidth * 0.57)); // ~16:9 vibe
+
+      // Set internal pixel buffer size
+      canvas.width  = Math.round(targetCssWidth  * dpr);
+      canvas.height = Math.round(targetCssHeight * dpr);
+
+      // Make the element visually match the computed CSS height
+      canvas.style.height = `${targetCssHeight}px`;
+
+      // Scale drawing so we can use CSS pixels for coordinates and lineWidth
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    // Pointer coordinates in CSS pixels
+    function pos(e) {
+      const r = canvas.getBoundingClientRect();
+      if (e.touches && e.touches[0]) {
+        return { x: e.touches[0].clientX - r.left, y: e.touches[0].clientY - r.top };
+      }
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    }
+
+    function start(e) {
+      drawing = true;
+      const p = pos(e); lastX = p.x; lastY = p.y;
+    }
+
+    function move(e) {
+      if (!drawing) return;
+      const p = pos(e);
+      ctx.strokeStyle = color.value;
+      ctx.lineWidth = +size.value;   // CSS pixels thanks to setTransform
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      ctx.lineTo(p.x, p.y);
+      ctx.stroke();
+      lastX = p.x; lastY = p.y;
+      e.preventDefault();
+    }
+
+    function end() { drawing = false; }
+
+    // Mouse events
+    canvas.addEventListener('mousedown', start);
+    canvas.addEventListener('mousemove', move);
+    canvas.addEventListener('mouseup', end);
+    canvas.addEventListener('mouseout', end);
+
+    // Touch events
+    canvas.addEventListener('touchstart', start, {passive:false});
+    canvas.addEventListener('touchmove', move, {passive:false});
+    canvas.addEventListener('touchend', end);
+
+    // Controls
+    clearBtn.addEventListener('click', () => ctx.clearRect(0, 0, canvas.width, canvas.height));
+    saveBtn.addEventListener('click', () => {
+      const url = canvas.toDataURL('image/png');
+      const w = window.open();
+      w.document.write('<img src="'+url+'" alt="drawing"/>');
+    });
+
+    // Handle initial layout and rotations/resizes
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('load', resizeCanvas);
+    resizeCanvas();
+</script>
+</body>
+</html>
