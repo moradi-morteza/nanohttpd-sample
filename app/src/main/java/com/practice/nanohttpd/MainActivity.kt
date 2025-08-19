@@ -3,21 +3,19 @@ package com.practice.nanohttpd
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.io.FileOutputStream
 
@@ -32,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var progressDownload: LinearProgressIndicator
     private lateinit var txtProgress: TextView
     private var projectNames: List<String> = emptyList()
-    private lateinit var websiteDownloader: WebsiteDownloader
+    private lateinit var webpageDownloadController: WebpageDownloadController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         val destRoot = File(filesDir, "projects")
         copyAssetFolder("projects", destRoot)
-        websiteDownloader = WebsiteDownloader(destRoot)
+        webpageDownloadController = WebpageDownloadController(destRoot)
 
         refreshProjectsList()
 
@@ -105,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         btnDownload.text = getString(R.string.downloading)
 
         lifecycleScope.launch {
-            websiteDownloader.downloadWebsite(url, object : WebsiteDownloader.ProgressCallback {
+            webpageDownloadController.downloadWebsite(url, object : WebpageDownloadController.ProgressCallback {
                 override fun onProgress(message: String, progress: Int, total: Int) {
                     runOnUiThread {
                         progressDownload.progress = progress
@@ -142,6 +140,29 @@ class MainActivity : AppCompatActivity() {
                             getString(R.string.download_error, error), 
                             Toast.LENGTH_LONG).show()
                     }
+                }
+
+                override fun onDuplicateFound(projectName: String, existingPath: String): WebpageDownloadController.DuplicateAction {
+                    val deferred = CompletableDeferred<WebpageDownloadController.DuplicateAction>()
+                    
+                    runOnUiThread {
+                        AlertDialog.Builder(this@MainActivity)
+                            .setTitle(getString(R.string.duplicate_project_title))
+                            .setMessage(getString(R.string.duplicate_project_message, projectName, existingPath))
+                            .setPositiveButton(getString(R.string.override_existing)) { _, _ ->
+                                deferred.complete(WebpageDownloadController.DuplicateAction.OVERRIDE)
+                            }
+                            .setNegativeButton(getString(R.string.skip_download)) { _, _ ->
+                                deferred.complete(WebpageDownloadController.DuplicateAction.SKIP)
+                            }
+                            .setNeutralButton(getString(R.string.create_new)) { _, _ ->
+                                deferred.complete(WebpageDownloadController.DuplicateAction.CREATE_NEW)
+                            }
+                            .setCancelable(false)
+                            .show()
+                    }
+                    
+                    return runBlocking { deferred.await() }
                 }
             })
         }
