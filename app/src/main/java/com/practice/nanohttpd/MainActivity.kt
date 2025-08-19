@@ -1,76 +1,58 @@
 package com.practice.nanohttpd
 
+import android.content.Intent
 import android.os.Bundle
-import android.webkit.WebChromeClient
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import android.widget.Button
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.button.MaterialButton
 import java.io.File
 import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
 
-    private var server: LocalHttpServer? = null
-    private val port = 8080
-
-    private lateinit var webView: WebView
-    private lateinit var btnProject1: Button
-    private lateinit var btnProject2: Button
-    private lateinit var btnProject3: Button
+    private lateinit var autoProjects: AutoCompleteTextView
+    private lateinit var btnOpen: MaterialButton
+    private lateinit var btnExplore: MaterialButton
+    private lateinit var titleText: TextView
+    private var projectNames: List<String> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        webView = findViewById(R.id.webView)
-        btnProject1 = findViewById(R.id.btnProject1)
-        btnProject2 = findViewById(R.id.btnProject2)
-        btnProject3 = findViewById(R.id.btnProject3)
+        autoProjects = findViewById(R.id.autoProjects)
+        btnOpen = findViewById(R.id.btnOpen)
+        btnExplore = findViewById(R.id.btnExplore)
+        titleText = findViewById(R.id.txtTitle)
 
-        // 1) Copy assets/projects/** -> filesDir/projects/**
         val destRoot = File(filesDir, "projects")
         copyAssetFolder("projects", destRoot)
 
-        // 2) Start localhost server serving filesDir/*
-        server = LocalHttpServer(filesDir, port).apply { start() }
+        projectNames = destRoot.listFiles()?.filter { it.isDirectory }?.map { it.name }?.sorted() ?: emptyList()
+        titleText.text = getString(R.string.title_projects, projectNames.size)
 
-        // 3) Configure WebView
-        webView.settings.javaScriptEnabled = true
-        webView.settings.domStorageEnabled = true
-        webView.webChromeClient = WebChromeClient()
-        webView.webViewClient = object : WebViewClient() {}
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, projectNames)
+        autoProjects.setAdapter(adapter)
+        autoProjects.setOnClickListener { autoProjects.showDropDown() }
 
-        // 4) Hook buttons
-        btnProject1.setOnClickListener {
-            loadPath("/projects/memory/index.html")
-        }
-        btnProject2.setOnClickListener {
-            loadPath("/projects/form/index.html")
-        }
-        btnProject3.setOnClickListener {
-            loadPath("/projects/canvas/index.html")
+        btnOpen.setOnClickListener {
+            val selected = autoProjects.text.toString()
+            if (selected.isBlank()) return@setOnClickListener
+            val intent = Intent(this, ProjectActivity::class.java).apply {
+                putExtra("project", selected)
+            }
+            startActivity(intent)
         }
 
-        // 5) Load default
-        loadPath("/projects/memory/index.html")
-    }
-
-    private fun loadPath(path: String) {
-        webView.loadUrl("http://127.0.0.1:$port$path")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        server?.stop()
-    }
-
-    @Deprecated("Yes, it's deprecated; yes, it's still fine here.")
-    override fun onBackPressed() {
-        if (this::webView.isInitialized && webView.canGoBack()) {
-            webView.goBack()
-        } else {
-            super.onBackPressed()
+        btnExplore.setOnClickListener {
+            val selected = autoProjects.text.toString()
+            if (selected.isBlank()) return@setOnClickListener
+            val intent = Intent(this, ProjectFilesActivity::class.java).apply {
+                putExtra("project", selected)
+            }
+            startActivity(intent)
         }
     }
 
@@ -89,17 +71,14 @@ class MainActivity : AppCompatActivity() {
             val sub = assetManager.list(childAssetPath)
 
             if (sub.isNullOrEmpty()) {
-                // It's a file; copy
                 assetManager.open(childAssetPath).use { input ->
                     FileOutputStream(childDest).use { output ->
                         input.copyTo(output)
                     }
                 }
             } else {
-                // It's a directory; recurse
                 copyAssetFolder(childAssetPath, childDest)
             }
         }
     }
 }
-
